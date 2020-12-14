@@ -41,7 +41,7 @@ class Server:
 			head = self.readHeader(sock)
 
 			for route, service in self.api:
-				if (callable(route) and route(addr, head)) or route:
+				if (callable(route) and route(addr, head)) or (not callable(route) and route):
 					if callable(service):
 						sock.send(service(addr, head, sock).encode('utf-8'))
 					else:
