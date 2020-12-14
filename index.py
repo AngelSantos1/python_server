@@ -4,6 +4,8 @@ from server import Server
 import os
 import sys
 
+from pyhtml import html
+
 server = Server("", 8080)
 
 def myroute(addr, head):
@@ -37,6 +39,27 @@ def myservice(addr, head, sock):
 
 	return output
 
-server.addService(myroute, myservice)
+def route1(addr, head):
+	return True
+
+def service1(addr, head, sock):
+	out_head = [
+		'HTTP/1.0 200 OK',
+		'Content-type: text/html; charset=UTF-8'
+	]
+
+	output = '\n'.join(out_head) + '\n\n'
+
+	doc = html.Html()
+	doc << html.Head()
+	body = html.Body()
+	body << "Hello World"
+	doc << body
+
+	output += str(doc)
+
+	return output
+
+server.addService(route1, service1)
 
 server.run()
