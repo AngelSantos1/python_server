@@ -19,8 +19,9 @@ class Server:
 		while b and b != b'\n':
 			result.append(b[0])
 			b = sock.recv(1)
-		result.append(b[0])
-		return result.decode('utf-8')
+		if b:
+			result.append(b[0])
+		return result.decode('utf-8', errors="ignore")
 
 	# read the http headers into a list from a socket
 	def readHeader(self, sock):
